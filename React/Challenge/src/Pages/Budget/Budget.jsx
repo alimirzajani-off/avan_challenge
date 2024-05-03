@@ -4,57 +4,64 @@ import { Input } from "../../Components/Input/Input";
 import BudgetItem from "./BudgetItem";
 
 const Budget = () => {
-  const [BudgetList, setBudgetList] = useState([]);
-  const [BudgetName, setBudgetName] = useState("");
+  const [CategoriesList, setCategoriesList] = useState([]);
+  const [CategoriesName, setCategoriesName] = useState("");
+  const [CategoriesPrice, setCategoriesPrice] = useState("");
+
   useEffect(() => {
-    getData();
+    let list = JSON.parse(localStorage.getItem("CategoriesList"));
+    setCategoriesList(list ?? []);
   }, []);
 
-  const getData = () => {
-    let budgetList = JSON.parse(localStorage.getItem("budgetList"));
-    setBudgetList(budgetList ? budgetList : []);
+  const handleCategoriesName = (e) => {
+    setCategoriesName(e.target.value);
   };
 
-  const handleBudgetName = (e) => {
-    setBudgetName(e.target.value);
+  const handleCategoriesPrice = (e) => {
+    setCategoriesPrice(e.target.value);
   };
 
-  const handleAddNewBudget = () => {
-    BudgetList.push(BudgetName);
-    localStorage.setItem("budgetList", JSON.stringify(BudgetList));
-    setBudgetName("");
-    getData();
+  const handleAddNewCategories = () => {
+    let CategoriesObj = {
+      id: CategoriesList?.length ?? 0,
+      CategoriesName: CategoriesName,
+      CategoriesPrice: CategoriesPrice,
+      value: CategoriesList?.length ?? 0,
+    };
+    CategoriesList.push(CategoriesObj);
+    localStorage.setItem("CategoriesList", JSON.stringify(CategoriesList));
+    setCategoriesName("");
   };
 
   return (
-    <div className="Budget shadow-md rounded-md	mt-2 m-4">
-      <div className="flex w-full justify-between items-end	p-1">
+    <div className="shadow-md rounded-md	mt-2 m-4 pb-3">
+      <div className="H-addCategories flex flex-row flex-wrap justify-between items-center	 px-3">
         <Input
-          label="موضوع بودجه"
-          value={BudgetName}
-          onChange={handleBudgetName}
-          className="w-full pl-2"
+          placeholder="عنوان بودجه را وارد نمائید."
+          value={CategoriesName}
+          onChange={handleCategoriesName}
+          className=" pl-2"
+        />
+        <Input
+          placeholder="مبلغ بودجه را وارد نمائید."
+          value={CategoriesPrice}
+          onChange={handleCategoriesPrice}
+          className=" pl-2"
+          type="nubmer"
         />
         <Button
-          className={"bg-lime-700 rounded p-0.5 w-40 h-10	"}
-          onClick={handleAddNewBudget}
+          className={
+            "border-2 border-green-700 border-solid hover:bg-lime-700 hover:text-white	rounded p-0.5 w-40 h-10	"
+          }
+          onClick={handleAddNewCategories}
         >
           افزودن
         </Button>
       </div>
-      <div className="py-1">
-        {BudgetList.map((item, index) => (
-          <BudgetItem
-            key={index}
-            title={item}
-            itemNumber={index}
-            getData={getData}
-            handleBudgetName={handleBudgetName}
-          />
-        ))}
-      </div>
+      {CategoriesList.map((item, index) => (
+        <BudgetItem key={index} title={item.CategoriesName} />
+      ))}
     </div>
   );
 };
-
 export default Budget;
