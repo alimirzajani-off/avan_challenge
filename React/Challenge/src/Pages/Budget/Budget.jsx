@@ -22,15 +22,18 @@ const Budget = () => {
   };
 
   const handleAddNewCategories = () => {
-    let CategoriesObj = {
-      id: CategoriesList?.length ?? 0,
-      CategoriesName: CategoriesName,
-      CategoriesPrice: CategoriesPrice,
-      value: CategoriesList?.length ?? 0,
-    };
-    CategoriesList.push(CategoriesObj);
-    localStorage.setItem("CategoriesList", JSON.stringify(CategoriesList));
-    setCategoriesName("");
+    if (CategoriesName) {
+      let CategoriesObj = {
+        id: CategoriesList?.length ?? 0,
+        CategoriesName: CategoriesName,
+        CategoriesPrice: CategoriesPrice,
+        value: CategoriesList?.length ?? 0,
+      };
+      CategoriesList.push(CategoriesObj);
+      localStorage.setItem("CategoriesList", JSON.stringify(CategoriesList));
+      setCategoriesName("");
+      setCategoriesPrice("");
+    }
   };
 
   return (
@@ -47,7 +50,7 @@ const Budget = () => {
           value={CategoriesPrice}
           onChange={handleCategoriesPrice}
           className=" pl-2"
-          type="nubmer"
+          type="number"
         />
         <Button
           className={

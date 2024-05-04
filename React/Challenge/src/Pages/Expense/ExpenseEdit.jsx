@@ -1,12 +1,13 @@
 import { createBrowserHistory } from "history";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Input } from "../../Components/Input/Input";
 import DropDown from "../../Components/DropDown/DropDown";
 import Button from "../../Components/Button/Button";
 const ExpenseEdit = () => {
+  let navigate = useNavigate();
   let history = createBrowserHistory();
   const [ExpenseTitle, setExpenseTitle] = useState();
-  const [Expensecategories, setExpensecategories] = useState();
   const [categorievalue, setcategorievalue] = useState(0);
   const [CategoriesList, setCategoriesList] = useState([]);
 
@@ -16,13 +17,12 @@ const ExpenseEdit = () => {
     let item = expenseList.filter(
       (item) => item?.id == Number(history.location.pathname.split("/")[2])
     );
-    let categorieValue = categoriesList.find(
+    let categorievalue = categoriesList.find(
       (it) => it.CategoriesName == item[0].categories
     );
-    setcategorievalue(categorieValue?.value);
+    setcategorievalue(categorievalue?.value);
     setCategoriesList(categoriesList ?? []);
     setExpenseTitle(item[0].ExpenseName);
-    setExpensecategories(item[0].categories);
   }, []);
 
   const handleEditItem = () => {
@@ -30,16 +30,17 @@ const ExpenseEdit = () => {
     let newList = List.map((item, index) => {
       if (index == Number(history.location.pathname.split("/")[2])) {
         let findBudget = CategoriesList.find(
-          (it) => it.value == Expensecategories
+          (it) => it.value == categorievalue
         );
         item.ExpenseName = ExpenseTitle;
-        item.categories = findBudget.CategoriesName;
+        item.categories = findBudget?.CategoriesName;
         return item;
       } else {
         return item;
       }
     });
     localStorage.setItem("expenseList", JSON.stringify(newList));
+    navigate("/Expense");
   };
 
   const handleChangeTitle = (e) => {
@@ -47,7 +48,7 @@ const ExpenseEdit = () => {
   };
 
   const handleChangeCategories = (e) => {
-    setExpensecategories(e.target.value);
+    setcategorievalue(e.target.value);
   };
 
   return (
