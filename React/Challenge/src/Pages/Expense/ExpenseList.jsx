@@ -44,7 +44,6 @@ const ExpenseList = () => {
       getData();
     }
   };
-
   return (
     <div className="Expense shadow-md rounded-md	mt-2 m-4 pb-3">
       <div className="flex w-full justify-between items-end	p-1 px-3">
@@ -72,16 +71,22 @@ const ExpenseList = () => {
         />
       </div>
       <div className="py-1">
-        {ExpenseList.map((item, index) => (
-          <ExpenseItem
-            key={index}
-            title={item.ExpenseName}
-            categories={item.categories}
-            itemNumber={index}
-            getData={getData}
-            handleExpenseName={handleExpenseName}
-          />
-        ))}
+        {ExpenseFilter.length > 0 && ExpenseList.length <= 0 ? (
+          <div className="px-4">موردی یافت نشد!</div>
+        ) : (
+          <>
+            {ExpenseList.map((item, index) => (
+              <ExpenseItem
+                key={index}
+                title={item.ExpenseName}
+                categories={item.categories}
+                itemNumber={index}
+                getData={getData}
+                handleExpenseName={handleExpenseName}
+              />
+            ))}
+          </>
+        )}
       </div>
     </div>
   );
