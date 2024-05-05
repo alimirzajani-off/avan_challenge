@@ -40,7 +40,9 @@ const Home = () => {
   console.log(expenseList, categoriesList[categorieSelected]);
   return (
     <div className="shadow-md rounded-md	mt-2 m-4 pb-3 p-4">
-      {!categorieSelected && <>لطفا یک عنوان بودجه را انتخاب کنید</>}
+      {!categorieSelected && (
+        <>جهت نمایش نمودار و وضعیت بوده، لطفا یک عنوان بودجه را انتخاب کنید</>
+      )}
       <DropDown
         option={categoriesList}
         value={categorieSelected}
